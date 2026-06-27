@@ -13,8 +13,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 1
-        versionName "0.1"
+        versionCode 2
+        versionName "0.1.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
@@ -40,6 +40,14 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // AGP 8+ 的 release 构建必须签名，否则安装时会报「解析包出现问题 / package info is null」
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+        }
     }
 
     applicationVariants.all { variant ->
