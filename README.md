@@ -1,13 +1,15 @@
 # 飞牛TV 弹幕版 🎯
 
-> 基于飞牛影视 API 的第三方 Android TV 客户端，支持弹幕、自动连播、TV 遥控器优化操作。
+> 基于飞牛影视 API 的第三方 Android 客户端，采用 **多模块 + TV/手机双 Flavor** 架构，支持弹幕、自动连播、TV 遥控器优化操作。
 
 ---
 
 ## 📥 下载与使用
 
 ### 方式一：直接下载 APK
-从 [Releases](https://github.com/rgcaafe/fnos_tv_danmu/releases) 页面下载最新版本的 APK 安装包，在 Android 电视/手机上安装即可使用。
+从 [Releases](https://github.com/rgcaafe/fnos_tv_danmu/releases) 页面下载最新版本的 APK 安装包：
+- **TV 版**：`FNTV_tv_release_*.apk` — Android TV / 电视盒子
+- **手机版**：`FNTV_mobile_release_*.apk` — Android 手机
 
 ### 方式二：本地构建
 
@@ -16,18 +18,69 @@
 git clone https://github.com/rgcaafe/fnos_tv_danmu.git
 cd fnos_tv_danmu
 
-# 2. 编译（需要 Android SDK）
-# Windows (gradlew.bat)
-.\gradlew assembleRelease
+# 2. 编译（需要 Android SDK API 33）
+# TV 版
+./gradlew assembleTvRelease
 
-# Linux / macOS
-./gradlew assembleRelease
+# 手机版
+./gradlew assembleMobileRelease
+
+# 同时编译两个版本
+./gradlew assembleTvRelease assembleMobileRelease
 
 # 3. 编译完成后 APK 位于：
-# app/build/outputs/apk/release/FNTV_release_*.apk
+# app/build/outputs/apk/tv/release/FNTV_tv_release_*.apk
+# app/build/outputs/apk/mobile/release/FNTV_mobile_release_*.apk
 ```
 
-> 注意：本地构建需要安装 [Android Studio](https://developer.android.com/studio) 并配置好 Android SDK（API 33）。如果使用 Windows 系统，构建时部分依赖可能需要科学上网。
+> 注意：本地构建需要安装 [Android Studio](https://developer.android.com/studio) 并配置好 Android SDK（API 33）。
+
+### 方式三：GitHub Actions 自动编译发布
+
+项目已配置 GitHub Actions，**无需本地 Android 环境**即可编译。
+
+#### 自动 CI 构建
+
+推送到 `master` 或 PR 时会自动触发 [Android CI](.github/workflows/build.yml)：
+
+- 编译 TV + 手机两个 Release APK
+- 产物可在 Actions 页面的 **Artifacts** 中下载（保留 14 天）
+
+#### 正式发布到 GitHub Releases
+
+1. 在 `app/build.gradle` 中更新 `versionCode` / `versionName`
+2. 提交并推送到 `master`
+3. 打 tag 并推送（tag 必须以 `v` 开头）：
+
+```bash
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+推送 tag 后会自动触发 [Release](.github/workflows/release.yml) 工作流，编译并上传到 **GitHub Releases**。
+
+> **说明**：当前 Release 使用默认 debug 签名，适合 sideload 安装。如需上架商店，可在仓库 Settings → Secrets 中配置签名密钥后扩展 workflow。
+
+---
+
+## 🏗 项目结构（方案 B：多模块 Monorepo）
+
+```
+fnos_tv_danmu/
+├── app/                 # 应用壳：Activity、Flavor 分端 UI
+│   ├── src/main/        # 共享代码与资源（登录、播放器）
+│   ├── src/tv/          # TV 专用：侧栏导航、TV Banner、Leanback 启动
+│   └── src/mobile/      # 手机专用：底部 Tab、触屏优化
+├── core-api/            # 飞牛影视 API（Retrofit + 模型）
+├── core-common/         # 通用工具（图片加载、ExoPlayer 数据源）
+├── core-player/         # 播放核心（云直链、剧集管理）
+└── feature-danmu/       # 弹幕功能（匹配、渲染、设置）
+```
+
+| Flavor | applicationId | 启动方式 |
+|--------|---------------|----------|
+| `tv` | `com.fntv.app` | `LEANBACK_LAUNCHER` |
+| `mobile` | `com.fntv.app.mobile` | `LAUNCHER` |
 
 ---
 

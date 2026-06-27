@@ -107,6 +107,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         initViews();
         setupTabs();
+        if (BuildConfig.IS_TV) setupTvFocusNavigation();
         setupSettings();
         setupLogout();
         updateManager.setup();
@@ -170,6 +171,31 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
+    private void setupTvFocusNavigation() {
+        View.OnFocusChangeListener scaleFocus = (v, hasFocus) -> {
+            v.animate().scaleX(hasFocus ? 1.06f : 1f).scaleY(hasFocus ? 1.06f : 1f).setDuration(120).start();
+        };
+        tabMovies.setOnFocusChangeListener(scaleFocus);
+        tabLibrary.setOnFocusChangeListener(scaleFocus);
+        tabSettings.setOnFocusChangeListener(scaleFocus);
+    }
+
+    private int cardWidthPx() {
+        return getResources().getDimensionPixelSize(R.dimen.card_width);
+    }
+
+    private int cardHeightPx() {
+        return getResources().getDimensionPixelSize(R.dimen.card_height);
+    }
+
+    private int cardPosterHeightPx() {
+        return getResources().getDimensionPixelSize(R.dimen.card_poster_height);
+    }
+
+    private int cardRowHeightPx() {
+        return getResources().getDimensionPixelSize(R.dimen.card_row_height);
+    }
 
     private void setupTabs() {
         tabMovies.setOnClickListener(v -> switchTab(0));
@@ -415,7 +441,7 @@ public class HomeActivity extends AppCompatActivity {
 
         HorizontalScrollView hsv = new HorizontalScrollView(this);
         hsv.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 410));
+                ViewGroup.LayoutParams.MATCH_PARENT, cardRowHeightPx()));
         hsv.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         LinearLayout row = new LinearLayout(this);
@@ -425,7 +451,7 @@ public class HomeActivity extends AppCompatActivity {
         for (PlayListItem item : items) {
             View card = makeContinueCard(item);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    220, 380);
+                    cardWidthPx(), cardHeightPx());
             lp.setMargins(10, 0, 10, 0);
             card.setLayoutParams(lp);
             if (viewAllId > 0) card.setNextFocusDownId(viewAllId);
@@ -464,7 +490,7 @@ public class HomeActivity extends AppCompatActivity {
 
         RoundedImageView poster = new RoundedImageView(this);
         poster.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 280));
+                ViewGroup.LayoutParams.MATCH_PARENT, cardPosterHeightPx()));
         poster.setScaleType(ImageView.ScaleType.CENTER_CROP);
         poster.setCornerRadius(10);
         poster.setBackgroundColor(0xFF333333);
@@ -583,7 +609,7 @@ public class HomeActivity extends AppCompatActivity {
     private void populateGrid(LinearLayout cont, List<PlayListItem> items) {
         HorizontalScrollView hsv = new HorizontalScrollView(this);
         hsv.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 410));
+                ViewGroup.LayoutParams.MATCH_PARENT, cardRowHeightPx()));
         hsv.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         LinearLayout row = new LinearLayout(this);
@@ -628,7 +654,7 @@ public class HomeActivity extends AppCompatActivity {
 
         for (int i = 0; i < items.size(); i++) {
             View card = makeItemCard(items.get(i));
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(220, 380);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(cardWidthPx(), cardHeightPx());
             lp.setMargins(10, 0, 10, 0);
             card.setLayoutParams(lp);
             // 卡片：↑到当前查看全部，↓到下一个查看全部
@@ -660,7 +686,7 @@ public class HomeActivity extends AppCompatActivity {
         // 海报 — 16:9 比例，等页面显示完后统一逐张加载
         RoundedImageView iv = new RoundedImageView(this);
         iv.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 280));
+                ViewGroup.LayoutParams.MATCH_PARENT, cardPosterHeightPx()));
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
         iv.setBackgroundColor(0xFF333333);
         iv.setCornerRadius(10);

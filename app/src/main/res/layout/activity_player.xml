@@ -92,7 +92,7 @@
     </RelativeLayout>
 
     <!-- 弹幕层（视频上方，控件下方） -->
-    <com.fntv.app.DanmuView
+    <com.fntv.danmu.DanmuView
         android:id="@+id/danmuView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,1 +1,5 @@
 include ':app'
+include ':core-api'
+include ':core-common'
+include ':core-player'
+include ':feature-danmu'
