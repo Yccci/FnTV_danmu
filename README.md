@@ -35,6 +35,36 @@ cd fnos_tv_danmu
 
 > 注意：本地构建需要安装 [Android Studio](https://developer.android.com/studio) 并配置好 Android SDK（API 33）。
 
+### 方式三：GitHub Actions 自动编译发布
+
+项目已配置 GitHub Actions，**无需本地 Android 环境**即可编译。
+
+#### 自动 CI 构建
+
+推送到 `master` 或 PR 时会自动触发 [Android CI](.github/workflows/build.yml)：
+
+- 编译 TV + 手机两个 Release APK
+- 产物可在 Actions 页面的 **Artifacts** 中下载（保留 14 天）
+
+#### 正式发布到 GitHub Releases
+
+1. 在 `app/build.gradle` 中更新 `versionCode` / `versionName`
+2. 提交并推送到 `master`
+3. 打 tag 并推送（tag 必须以 `v` 开头）：
+
+```bash
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+推送 tag 后会自动触发 [Release](.github/workflows/release.yml) 工作流，并：
+
+- 编译 `FNTV_tv_release_v{版本}.apk` 和 `FNTV_mobile_release_v{版本}.apk`
+- 创建 GitHub Release 并上传 APK
+- 附带 `update.json`（含 GitHub 下载地址，供 App 内更新检测）
+
+> **说明**：当前 Release 使用默认 debug 签名，适合 sideload 安装。如需上架商店，可在仓库 Settings → Secrets 中配置签名密钥后扩展 workflow。
+
 ---
 
 ## 🏗 项目结构（方案 B：多模块 Monorepo）

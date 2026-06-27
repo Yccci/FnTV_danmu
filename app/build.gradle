@@ -44,7 +44,12 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "FNTV_${variant.flavorName}_${variant.buildType.name}_v${variant.versionName}_${generateTime()}.apk"
+            def stableName = project.hasProperty('stableApkName') && project.property('stableApkName') == 'true'
+            if (stableName) {
+                outputFileName = "FNTV_${variant.flavorName}_${variant.buildType.name}_v${variant.versionName}.apk"
+            } else {
+                outputFileName = "FNTV_${variant.flavorName}_${variant.buildType.name}_v${variant.versionName}_${generateTime()}.apk"
+            }
         }
     }
 }
