@@ -57,11 +57,7 @@ git tag v1.2.0
 git push origin v1.2.0
 ```
 
-推送 tag 后会自动触发 [Release](.github/workflows/release.yml) 工作流，并：
-
-- 编译 `FNTV_tv_release_v{版本}.apk` 和 `FNTV_mobile_release_v{版本}.apk`
-- 创建 GitHub Release 并上传 APK
-- 附带 `update.json`（含 GitHub 下载地址，供 App 内更新检测）
+推送 tag 后会自动触发 [Release](.github/workflows/release.yml) 工作流，编译并上传到 **GitHub Releases**。
 
 > **说明**：当前 Release 使用默认 debug 签名，适合 sideload 安装。如需上架商店，可在仓库 Settings → Secrets 中配置签名密钥后扩展 workflow。
 
