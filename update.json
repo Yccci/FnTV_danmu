@@ -1,7 +1,8 @@
 {
-    "versionCode": 17,
-    "versionName": "1.1.7",
-    "apkUrl": "https://gitee.com/coffee710/fntv/releases/download/v1.1.7/FNTV_release_v1.1.7_20260621_1450.apk",
-    "changelog": "1.修复安卓7闪退问题\n2.修复手机更新无法安装问题",
+    "versionCode": 18,
+    "versionName": "1.2.0",
+    "apkUrl": "https://gitee.com/coffee710/fntv/releases/download/v1.2.0/FNTV_tv_release_v1.2.0.apk",
+    "apkUrlMobile": "https://gitee.com/coffee710/fntv/releases/download/v1.2.0/FNTV_mobile_release_v1.2.0.apk",
+    "changelog": "1.多模块架构重构（core-api/core-player/feature-danmu）\n2.TV/手机双 Flavor 分包发布\n3.TV 版侧栏导航与 Google TV 安全区优化",
     "forceUpdate": false
   }

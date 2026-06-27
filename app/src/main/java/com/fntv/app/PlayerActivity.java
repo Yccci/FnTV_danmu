@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.pm.ActivityInfo;
 import com.fntv.app.api.FnApiManager;
 import com.fntv.app.api.model.*;
+import com.fntv.danmu.DanmuManager;
+import com.fntv.danmu.DanmuView;
 import com.google.android.exoplayer2.*;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
@@ -246,6 +248,9 @@ public class PlayerActivity extends AppCompatActivity {
         });
         btnCloseInfo.setOnClickListener(v -> { infoPanel.setVisibility(View.GONE); infoVis = false; });
         btnBrightness = findViewById(R.id.btnBrightness);
+        if (btnBrightness != null) {
+            btnBrightness.setVisibility(BuildConfig.IS_TV ? View.GONE : View.VISIBLE);
+        }
         if (btnBrightness != null) {
             btnBrightness.setOnClickListener(v -> showBrightnessDialog());
         }
@@ -1284,9 +1289,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private boolean isTvDevice() {
-        android.app.UiModeManager uiModeManager = (android.app.UiModeManager) getSystemService(UI_MODE_SERVICE);
-        return uiModeManager != null
-                && uiModeManager.getCurrentModeType() == android.content.res.Configuration.UI_MODE_TYPE_TELEVISION;
+        return BuildConfig.IS_TV;
     }
 
     @Override

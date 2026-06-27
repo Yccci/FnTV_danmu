@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 用于 ScrollView 内容最小高度，实现居中效果 -->
-    <dimen name="min_height_fill">480dp</dimen>
-    <!-- 默认卡片尺寸（mobile flavor 会覆盖） -->
     <dimen name="card_width">220dp</dimen>
     <dimen name="card_height">380dp</dimen>
     <dimen name="card_poster_height">280dp</dimen>

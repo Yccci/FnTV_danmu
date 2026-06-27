@@ -1,4 +1,4 @@
-package com.fntv.app;
+package com.fntv.danmu;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

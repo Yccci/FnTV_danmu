@@ -15,7 +15,7 @@
         android:textStyle="bold"
         android:paddingBottom="12dp" />
 
-    <include layout="@layout/item_danmu_slider"
+    <include layout="@layout/item_slider"
         android:id="@+id/dm_brightness" />
 
     <LinearLayout

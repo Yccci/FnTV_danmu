@@ -1,24 +1,40 @@
-// App 目录 build.gradle (app/build.gradle)
 plugins {
     id 'com.android.application'
 }
 
 android {
+    namespace 'com.fntv.app'
     compileSdkVersion 33
 
+    buildFeatures {
+        buildConfig true
+    }
+
     defaultConfig {
-        applicationId "com.fntv.app"
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 17
-        versionName "1.1.7"
+        versionCode 18
+        versionName "1.2.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
 
-    dexOptions {
-        preDexLibraries false
-        javaMaxHeapSize "2g"
+    flavorDimensions "platform"
+    productFlavors {
+        tv {
+            dimension "platform"
+            applicationId "com.fntv.app"
+            resValue "string", "app_name", "FN TV"
+            buildConfigField "boolean", "IS_TV", "true"
+            buildConfigField "String", "PLATFORM", "\"tv\""
+        }
+        mobile {
+            dimension "platform"
+            applicationId "com.fntv.app.mobile"
+            resValue "string", "app_name", "FN TV 手机版"
+            buildConfigField "boolean", "IS_TV", "false"
+            buildConfigField "String", "PLATFORM", "\"mobile\""
+        }
     }
 
     compileOptions {
@@ -28,7 +44,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "FNTV_${variant.buildType.name}_v${variant.versionName}_${generateTime()}.apk"
+            outputFileName = "FNTV_${variant.flavorName}_${variant.buildType.name}_v${variant.versionName}_${generateTime()}.apk"
         }
     }
 }
@@ -38,6 +54,11 @@ static def generateTime() {
 }
 
 dependencies {
+    implementation project(':core-api')
+    implementation project(':core-common')
+    implementation project(':core-player')
+    implementation project(':feature-danmu')
+
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.android.material:material:1.5.0'
